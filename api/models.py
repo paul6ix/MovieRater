@@ -8,6 +8,9 @@ class MovieModel(models.Model):
     description = models.TextField(blank=True, null=True, max_length=1000)
     release_date = models.DateField
 
+    def __str__(self):
+        return self.title
+
 
 class RatingModel(models.Model):
     movie = models.ForeignKey(MovieModel, on_delete=models.CASCADE)
