@@ -8,6 +8,20 @@ class MovieModel(models.Model):
     description = models.TextField(blank=True, null=True, max_length=1000)
     release_date = models.DateField
 
+    def get_ratings(self):
+        ratings = RatingModel.objects.filter(movie=self)
+        return len(ratings)
+
+    def avg_ratings(self):
+        sum = 0
+        ratings = RatingModel.objects.filter(movie=self)
+        for rating in ratings:
+            sum = + rating.stars
+        if len(ratings) > 0:
+            return sum / len(ratings)
+        else:
+            return 0
+
     def __str__(self):
         return self.title
 

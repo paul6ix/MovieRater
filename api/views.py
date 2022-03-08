@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
 from .models import MovieModel, RatingModel
 from django.contrib.auth.models import User
@@ -11,13 +12,15 @@ from .serializer import MovieSerializer, RatingSerializer
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = MovieModel.objects.all()
     serializer_class = MovieSerializer
+    authentication_classes = (TokenAuthentication,)
 
     @action(detail=True, methods=['POST'])
     def rate(self, request, pk=None):
         if 'stars' in request.data:
             movie = MovieModel.objects.get(id=pk)
             stars = request.data['stars']
-            user = User.objects.get(id=1)
+            user = request.user
+            print(user)
             try:
                 rating = RatingModel.objects.get(user=user.id, movie=movie.id)
                 rating.stars = stars
@@ -34,3 +37,4 @@ class MovieViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = RatingModel.objects.all()
     serializer_class = RatingSerializer
+    authentication_classes = (TokenAuthentication,)
