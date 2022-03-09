@@ -3,16 +3,23 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from .models import MovieModel, RatingModel
 from django.contrib.auth.models import User
-from .serializer import MovieSerializer, RatingSerializer
+from .serializer import MovieSerializer, RatingSerializer, UserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = MovieModel.objects.all()
     serializer_class = MovieSerializer
     authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     @action(detail=True, methods=['POST'])
     def rate(self, request, pk=None):
