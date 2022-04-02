@@ -1,15 +1,14 @@
 import './App.css';
 import MovieList from "./components/movieList";
 import React, {Component} from "react";
+import MovieDetails from "./components/movieDetails";
 
 const baseUrl = 'http://127.0.0.1:8000/'
 
 class App extends Component {
-
-    movies = ['Fantastic 4', 'Spiderman', 'Batman']
-
     state = {
-        movies: []
+        movies: [],
+        selectedMovie: null
     }
 
 
@@ -23,11 +22,20 @@ class App extends Component {
             .catch(error => console.error('error', error))
     }
 
+    movieClicked = movie => {
+        this.setState({selectedMovie: movie})
+    }
+
     render() {
+
         return (
             <div className="App">
                 <h1> Movie Rater </h1>
-                <MovieList movies={this.state.movies}/>
+
+                <div className="Layout">
+                    <MovieList movies={this.state.movies} movieClicked={this.movieClicked}/>
+                    <MovieDetails movie={this.state.selectedMovie}/>
+                </div>
             </div>
         );
     }
