@@ -12,6 +12,9 @@
     grid-template-columns: 1fr 1fr;
     text-align: left;
 }
+.stared {
+    color: deeppink;
+}
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
