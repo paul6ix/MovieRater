@@ -7,14 +7,31 @@
     font-size: calc(10px + 2vmin);
     color: white;
 }
+
 .Layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
     text-align: left;
 }
+
 .stared {
     color: deeppink;
 }
+
+.rate {
+    color: purple;
+}
+
+.rate-div {
+    border-top: 2px solid purple;
+}
+
+.rate-div span.fa {
+    font-size: 2em;
+    cursor: pointer;
+
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
