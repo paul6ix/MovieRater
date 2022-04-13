@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 let FA = require('react-fontawesome');
 
-const baseUrl = 'http://127.0.0.1:8000/'
+// const baseUrl = 'http://127.0.0.1:8000/'
 
 class MovieDetails extends Component {
 
