@@ -24,6 +24,15 @@ class App extends Component {
     loadMovie = movie => {
         this.setState({selectedMovie: movie})
     }
+    deletedMovie = selectedMovie => {
+        //comparing deleted movie ID to list of available movie
+        const movies = this.state.movies.filter(movie => movie.id !== selectedMovie.id)
+        this.setState(
+            {movies: movies, selectedMovie: null}
+        )
+
+
+    }
 
     render() {
 
@@ -32,8 +41,10 @@ class App extends Component {
                 <h1> Movie Rater </h1>
 
                 <div className="Layout">
-                    <MovieList movies={this.state.movies} movieClicked={this.loadMovie}/>
-                    <MovieDetails movie={this.state.selectedMovie} updateMovie={this.loadMovie}/>
+                    <MovieList movies={this.state.movies} movieClicked={this.loadMovie}
+                               deleteMovie={this.deletedMovie}/>
+                    <MovieDetails movie={this.state.selectedMovie} updateMovie={this.loadMovie}
+                    />
                 </div>
             </div>
         );
