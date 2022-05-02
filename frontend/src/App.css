@@ -12,6 +12,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     text-align: left;
+    grid-gap: 20px;
 }
 
 .stared {
@@ -30,6 +31,14 @@
     font-size: 2em;
     cursor: pointer;
 
+}
+.movie-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+}
+.movie-item span {
+    font-size: 0.8em;
+    margin: 16px 5px;
 }
 
 @keyframes App-logo-spin {
