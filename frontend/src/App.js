@@ -24,13 +24,17 @@ class App extends Component {
     }
 
     loadMovie = movie => {
-        this.setState({selectedMovie: movie, editedMovie:null})
+        this.setState({selectedMovie: movie, editedMovie: null})
     }
     editedMovie = selectedMovie => {
         this.setState({editedMovie: selectedMovie})
     }
     addMovie = () => {
         this.setState({editedMovie: {title: '', description: ''}})
+    }
+    newMovie = movie => {
+        //Loading the previous movies
+        this.setState({movies: [...this.state.movies, movie]})
     }
     deletedMovie = selectedMovie => {
         //comparing deleted movie ID to list of available movie
@@ -41,6 +45,9 @@ class App extends Component {
 
 
     }
+    close = () => {
+        this.setState({editedMovie: null})
+    }
 
     render() {
 
@@ -49,10 +56,12 @@ class App extends Component {
                 <h1> Movie Rater </h1>
 
                 <div className="Layout">
-                    <MovieList movies={this.state.movies} movieClicked={this.loadMovie} editClicked={this.editedMovie} addClicked={this.addMovie}
+                    <MovieList movies={this.state.movies} movieClicked={this.loadMovie} editClicked={this.editedMovie}
+                               addClicked={this.addMovie}
+
                                deleteClicked={this.deletedMovie}/>
 
-                    {this.state.editedMovie ? <MovieForm movie={this.state.editedMovie}/> :
+                    {this.state.editedMovie ? <MovieForm movie={this.state.editedMovie} updatedMovie={this.loadMovie}  newMovie={this.newMovie} closeForm={this.close}/> :
                         <MovieDetails movie={this.state.selectedMovie} updateMovie={this.loadMovie}/>}
 
 
