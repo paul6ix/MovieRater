@@ -1,4 +1,5 @@
 import React from "react";
+import {Container, Row, Button} from "react-bootstrap";
 
 var FA = require('react-fontawesome')
 
@@ -18,12 +19,14 @@ function MovieList(props) {
     const deleteClicked = movie => event => {
         //delete movie
 
+
         fetch(`${process.env.REACT_APP_BASE_URL}api/movies/${movie.id}/`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Token bf91530303048de3a86ffe40dd987e8dce324d66'
+                'Authorization': `Token ${props.token}`
             },
+
 
         }).then(res => props.deleteClicked(movie))
             .catch(error => console.error('error', error))
@@ -32,8 +35,9 @@ function MovieList(props) {
 
     return (
 
-        <div>
-            {props.movies.map(movie => {
+        <Container>
+            <Row>
+                 {props.movies.map(movie => {
                 return <div key={movie.id} className="movie-item">
                     <h3 onClick={movieClicked(movie)}> {movie.title}</h3>
                     <FA name="edit" onClick={editClicked(movie)}/>
@@ -41,9 +45,11 @@ function MovieList(props) {
 
                 </div>
             })}
-            <button onClick={addMovie}>Add Movie</button>
+            <Button variant={"outline-primary"} onClick={addMovie}>Add Movie</Button>
+            </Row>
 
-        </div>
+
+        </Container>
     )
 }
 

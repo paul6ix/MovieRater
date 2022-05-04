@@ -3,24 +3,35 @@ import MovieList from "./components/movieList";
 import React, {Component} from "react";
 import MovieDetails from "./components/movieDetails";
 import MovieForm from "./components/movieForm";
+import {withCookies} from "react-cookie";
+import {Col, Container, Row} from "react-bootstrap";
 
 
 class App extends Component {
     state = {
         movies: [],
         selectedMovie: null,
-        editedMovie: null
+        editedMovie: null,
+        auth: this.props.cookies.get('AuthToken')
     }
 
 
     componentDidMount() {
-        // Fetch data
-        fetch(`${process.env.REACT_APP_BASE_URL}api/movies`, {
-            method: 'GET',
-            headers: {'Authorization': 'Token bf91530303048de3a86ffe40dd987e8dce324d66'}
-        }).then(response => response.json())
-            .then(res => this.setState({movies: res}))
-            .catch(error => console.error('error', error))
+        //checking for token
+        if (this.state.auth) {
+            // Fetch data
+            fetch(`${process.env.REACT_APP_BASE_URL}api/movies`, {
+                method: 'GET',
+                headers: {'Authorization': `Token ${this.state.auth}`}
+            }).then(response => response.json())
+                .then(res => this.setState({movies: res}))
+                .catch(error => console.error('error', error))
+        } else {
+            alert("Please login to access this page")
+            window.location.href = '/'
+        }
+
+
     }
 
     loadMovie = movie => {
@@ -53,19 +64,32 @@ class App extends Component {
 
         return (
             <div className="App">
-                <h1> Movie Rater </h1>
-
-                <div className="Layout">
-                    <MovieList movies={this.state.movies} movieClicked={this.loadMovie} editClicked={this.editedMovie}
-                               addClicked={this.addMovie}
-
-                               deleteClicked={this.deletedMovie}/>
-
-                    {this.state.editedMovie ? <MovieForm movie={this.state.editedMovie} updatedMovie={this.loadMovie}  newMovie={this.newMovie} closeForm={this.close}/> :
-                        <MovieDetails movie={this.state.selectedMovie} updateMovie={this.loadMovie}/>}
+                <Row>
+                    <h1> Movie Rater </h1>
+                </Row>
 
 
-                </div>
+                <Container className="Layout">
+                    <Row>
+                        <Col lg="8">
+                            <MovieList movies={this.state.movies} movieClicked={this.loadMovie}
+                                       editClicked={this.editedMovie}
+                                       addClicked={this.addMovie}
+
+                                       deleteClicked={this.deletedMovie} token={this.state.auth}/>
+                        </Col>
+                        <Col md="4">
+                            {this.state.editedMovie ?
+                                <MovieForm movie={this.state.editedMovie} updatedMovie={this.loadMovie}
+                                           newMovie={this.newMovie}
+                                           closeForm={this.close} token={this.state.auth}/> :
+                                <MovieDetails movie={this.state.selectedMovie} updateMovie={this.loadMovie}
+                                              token={this.state.auth}/>}
+                        </Col>
+                    </Row>
+
+
+                </Container>
             </div>
         );
     }
@@ -73,4 +97,4 @@ class App extends Component {
 
 }
 
-export default App;
+export default withCookies(App);
